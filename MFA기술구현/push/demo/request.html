@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Push 로그인 요청</title>
+</head>
+<body style="text-align:center;margin-top:50px;">
+  <h2>Push 인증 테스트</h2>
+  <input type="text" id="username" placeholder="사용자 이름 입력">
+  <button onclick="sendRequest()">로그인 요청 보내기</button>
+  <p id="result"></p>
+
+  <script>
+    async function sendRequest() {
+      const username = document.getElementById("username").value;
+      const res = await fetch('/login/request', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username})
+      });
+      const data = await res.json();
+      if (res.ok) {
+        document.getElementById("result").innerHTML =
+          `요청 생성 완료! <a href="${data.link}" target="_blank">승인 페이지 열기</a>`;
+      } else {
+        document.getElementById("result").innerText = "요청 실패: " + data.error;
+      }
+    }
+  </script>
+</body>
+</html>
